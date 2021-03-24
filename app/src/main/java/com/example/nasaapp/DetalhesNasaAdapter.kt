@@ -1,5 +1,6 @@
 package com.example.nasaapp
 
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -42,6 +43,7 @@ class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<
                    }
                    else //Caso esteja na ultima foto o programa retornara para a primeira
                    {
+                       println(nasa[posicao])
                        with(nasa[posicao])
                        {
                            val dateString = date.substring(0,10).replace("-","/")
@@ -78,9 +80,21 @@ class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<
                    }
                }
                binding.btnPlay.setOnClickListener {
-                   for(i in 0..nasa.size)
+                   var tamanho = nasa.size
+                   tamanho -= 1
+                   for(i in 0..2)
                    {
+                       with(nasa[i+1])
+                       {
+                           Picasso.get().load("https://epic.gsfc.nasa.gov/archive/natural/$dateString/png/$image.png")
+                                   .into(binding.image)
+                           binding.txtImageName.text = image
+                           binding.txtDate.text = date
+                           binding.txtCaption.text = " "
+                           binding.txtCoordenates.text = " "
 
+                           Thread.sleep(2000)
+                       }
                    }
                }
            }
