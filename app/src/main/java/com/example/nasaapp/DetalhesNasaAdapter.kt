@@ -16,8 +16,6 @@ class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<
         return NasaViewHolder(binding)
     }
 
-
-
     override fun onBindViewHolder(holder: NasaViewHolder, position: Int) {
        with(holder)
        {
@@ -29,48 +27,65 @@ class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<
                Picasso.get().load("https://epic.gsfc.nasa.gov/archive/natural/$dateString/png/$image.png")
                        .into(binding.image)
 
-               var posicaoAtual = nasa[position].toString().toInt()
-
                binding.txtImageName.text = image
                binding.txtDate.text = date
                binding.txtCaption.text = caption
                binding.txtCoordenates.text = centroid_coordinates.toString()
 
+               var posicao = position
+                // botao para proxima imagem
                binding.btnNext.setOnClickListener {
-                   posicaoAtual = posicaoAtual++
-                   with(posicaoAtual)
+                   posicao += 1
+                   if(posicao == nasa.size)
                    {
-                       val dateString = date.substring(0,10).replace("-","/")
-                       Picasso.get().load("https://epic.gsfc.nasa.gov/archive/natural/$dateString/png/$image.png")
-                               .into(binding.image)
+                       posicao = 0
+                   }
+                   else //Caso esteja na ultima foto o programa retornara para a primeira
+                   {
+                       with(nasa[posicao])
+                       {
+                           val dateString = date.substring(0,10).replace("-","/")
+                           Picasso.get().load("https://epic.gsfc.nasa.gov/archive/natural/$dateString/png/$image.png")
+                                   .into(binding.image)
 
-                       binding.txtImageName.text = image
-                       binding.txtDate.text = date
-                       binding.txtCaption.text = caption
-                       binding.txtCoordenates.text = centroid_coordinates.toString()
+                           binding.txtImageName.text = image
+                           binding.txtDate.text = date
+                           binding.txtCaption.text = caption
+                           binding.txtCoordenates.text = centroid_coordinates.toString()
+                       }
                    }
                }
+                // botao para imagem passada
                binding.btnPreview.setOnClickListener {
-                   posicaoAtual = posicaoAtual--
-                   with(posicaoAtual)
+                   if(posicao == 0)
                    {
-                       val dateString = date.substring(0,10).replace("-","/")
-                       Picasso.get().load("https://epic.gsfc.nasa.gov/archive/natural/$dateString/png/$image.png")
-                               .into(binding.image)
+                       Toast.makeText(itemView.context, "Não é possivel voltar imagem", Toast.LENGTH_SHORT).show()
+                   }
+                   else //Caso caso seja a primeira foto o programa irá alertar q nao da para voltar
+                   {
+                       posicao -= 1
+                       with(nasa[posicao])
+                       {
+                           val dateString = date.substring(0,10).replace("-","/")
+                           Picasso.get().load("https://epic.gsfc.nasa.gov/archive/natural/$dateString/png/$image.png")
+                                   .into(binding.image)
 
-                       binding.txtImageName.text = image
-                       binding.txtDate.text = date
-                       binding.txtCaption.text = caption
-                       binding.txtCoordenates.text = centroid_coordinates.toString()
+                           binding.txtImageName.text = image
+                           binding.txtDate.text = date
+                           binding.txtCaption.text = caption
+                           binding.txtCoordenates.text = centroid_coordinates.toString()
+                       }
                    }
                }
+               binding.btnPlay.setOnClickListener {
+                   for(i in 0..nasa.size)
+                   {
 
-               binding.btnPreview.setOnClickListener {
-                   Toast.makeText(itemView.context, "OASDHIPUAHUPDHSIOUADSHOSHUHUSDAI", Toast.LENGTH_SHORT).show()
+                   }
                }
            }
        }
     }
 
-    override fun getItemCount(): Int = nasa.size
+override fun getItemCount(): Int = nasa.size
 }
