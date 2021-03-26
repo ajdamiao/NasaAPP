@@ -3,16 +3,6 @@
     package="com.example.nasaapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <meta-data
-        android:name="com.google.android.gms.version"
-        android:value="@integer/google_play_services_version" />
-    <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="@string/google_maps_key" />
 
     <application
         android:allowBackup="true"
@@ -21,12 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NasaAPP">
-        <activity android:name=".TelaDetalhes"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".TelaDetalhes" />
+        <activity android:name=".TelaTransicao">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
     </application>

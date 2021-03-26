@@ -1,5 +1,6 @@
 package com.example.nasaapp
 
+import android.content.Intent
 import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,9 +8,15 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.databinding.ItemDetalhesBinding
 import com.example.nasaapp.model.NasaResponse
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 
-class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<DetalhesNasaAdapter.NasaViewHolder>() {
+class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<DetalhesNasaAdapter.NasaViewHolder>(){
     inner class NasaViewHolder(val binding: ItemDetalhesBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NasaViewHolder {
@@ -31,7 +38,6 @@ class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<
                binding.txtImageName.text = image
                binding.txtDate.text = date
                binding.txtCaption.text = caption
-               binding.txtCoordenates.text = centroid_coordinates.toString()
 
                var posicao = position
                 // botao para proxima imagem
@@ -46,7 +52,6 @@ class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<
                        println(nasa[posicao])
                        with(nasa[posicao])
                        {
-                           val dateString = date.substring(0,10).replace("-","/")
                            Picasso.get().load("https://epic.gsfc.nasa.gov/archive/natural/$dateString/png/$image.png")
                                    .into(binding.image)
 
@@ -68,7 +73,6 @@ class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<
                        posicao -= 1
                        with(nasa[posicao])
                        {
-                           val dateString = date.substring(0,10).replace("-","/")
                            Picasso.get().load("https://epic.gsfc.nasa.gov/archive/natural/$dateString/png/$image.png")
                                    .into(binding.image)
 
@@ -80,9 +84,7 @@ class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<
                    }
                }
                binding.btnPlay.setOnClickListener {
-                   var tamanho = nasa.size
-                   tamanho -= 1
-                   for(i in 0..2)
+                   for(i in 0..1)
                    {
                        with(nasa[i+1])
                        {
@@ -97,9 +99,13 @@ class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<
                        }
                    }
                }
+               binding.toolbarDetalhes.setNavigationOnClickListener {
+                   val intent = Intent(itemView.context, MainActivity::class.java)
+                   itemView.context.startActivity(intent)
+               }
            }
        }
     }
 
-override fun getItemCount(): Int = nasa.size
+    override fun getItemCount(): Int = nasa.size
 }
