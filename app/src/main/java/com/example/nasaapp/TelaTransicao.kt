@@ -15,7 +15,7 @@ class TelaTransicao : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             abrirTelaPrincipal()
-        },3000)
+        },2000)
     }
 
     fun abrirTelaPrincipal()

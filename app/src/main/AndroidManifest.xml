@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.nasaapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -11,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NasaAPP">
-        <activity android:name=".MainActivity"></activity>
+
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/apiKeyMaps"/>
+        <activity android:name=".MainActivity" />
         <activity android:name=".TelaDetalhes" />
         <activity android:name=".TelaTransicao">
             <intent-filter>

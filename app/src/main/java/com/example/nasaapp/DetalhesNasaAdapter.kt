@@ -2,6 +2,8 @@ package com.example.nasaapp
 
 import android.content.Intent
 import android.opengl.Visibility
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -15,9 +17,15 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
+import java.util.*
+import kotlin.concurrent.schedule
+import kotlin.concurrent.timerTask
 
 class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<DetalhesNasaAdapter.NasaViewHolder>(){
     inner class NasaViewHolder(val binding: ItemDetalhesBinding): RecyclerView.ViewHolder(binding.root)
+
+    private var dateString: String? = null
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NasaViewHolder {
         val binding = ItemDetalhesBinding.inflate(LayoutInflater.from(parent.context), parent,false)
@@ -31,7 +39,7 @@ class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<
            with(nasa[position])
            {
 
-               val dateString = date.substring(0,10).replace("-","/")
+               dateString = date.substring(0,10).replace("-","/")
                Picasso.get().load("https://epic.gsfc.nasa.gov/archive/natural/$dateString/png/$image.png")
                        .into(binding.image)
 
@@ -83,22 +91,28 @@ class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<
                        }
                    }
                }
-               binding.btnPlay.setOnClickListener {
-                   for(i in 0..1)
-                   {
-                       with(nasa[i+1])
-                       {
-                           Picasso.get().load("https://epic.gsfc.nasa.gov/archive/natural/$dateString/png/$image.png")
-                                   .into(binding.image)
-                           binding.txtImageName.text = image
-                           binding.txtDate.text = date
-                           binding.txtCaption.text = " "
-                           binding.txtCoordenates.text = " "
 
-                           Thread.sleep(2000)
-                       }
+
+               /*binding.btnPlay.setOnClickListener {
+
+
+
+                   timerFare.schedule(2000) {
+                       trocarImagem()
                    }
-               }
+
+                   /*with(nasa[i+1])
+                   {
+                       Picasso.get().load("https://epic.gsfc.nasa.gov/archive/natural/$dateString/png/$image.png")
+                               .into(binding.image)
+                       binding.txtImageName.text = image
+                       binding.txtDate.text = date
+                       binding.txtCaption.text = " "
+                       binding.txtCoordenates.text = " "
+
+                   }*/
+
+               }*/
                binding.toolbarDetalhes.setNavigationOnClickListener {
                    val intent = Intent(itemView.context, MainActivity::class.java)
                    itemView.context.startActivity(intent)
@@ -107,5 +121,26 @@ class DetalhesNasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<
        }
     }
 
+    /*private fun NasaViewHolder.trocarImagem() {
+        if(index < nasa.size-1)
+        {
+            index++
+        }
+        else
+        {
+            index = 0
+        }
+        with(nasa[index])
+        {
+            Picasso.get().load("https://epic.gsfc.nasa.gov/archive/natural/$dateString/png/$image.png")
+                    .into(binding.image)
+            binding.txtImageName.text = image
+            binding.txtDate.text = date
+            binding.txtCaption.text = " "
+            binding.txtCoordenates.text = " "
+        }
+    }*/
+
     override fun getItemCount(): Int = nasa.size
 }
+

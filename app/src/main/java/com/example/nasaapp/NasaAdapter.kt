@@ -1,12 +1,15 @@
 package com.example.nasaapp
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nasaapp.databinding.ItemFotoBinding
 import com.example.nasaapp.model.NasaResponse
+import com.google.gson.Gson
 import com.squareup.picasso.Picasso
+import java.io.Serializable
 import kotlin.math.sign
 
 class NasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<NasaAdapter.NasaViewHolder>() {
@@ -32,7 +35,9 @@ class NasaAdapter(private val nasa: NasaResponse): RecyclerView.Adapter<NasaAdap
                 binding.btnDetalhes.setOnClickListener {
                     val intent = Intent(itemView.context, TelaDetalhes::class.java)
 
-                    intent.putExtra("date", date)
+                    val json = Gson().toJson(nasa[position])
+                    intent.putExtra("nasaJson", json)
+
 
                     itemView.context.startActivity(intent)
                 }
